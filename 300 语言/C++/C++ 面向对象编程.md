@@ -151,21 +151,69 @@ book(string name) : name(name) {}
 
 this 指针的使用场景
 返回 `*this`实现链式调用
+我们可以将void方法改为返回类名&（引用类型）来实现链式调用，即：
+```cpp
+class book
+{
+public:
+	book& saysth()
+	{
+		std::cout << "Hi" << std::endl;
+		return *this; 
+		// 返回的是this指针指向的类，注意*在这里解引用了，所以是操作地址位置的类
+	}
+}
 
+int main()
+{
+	book a;
+	a.saysth().saysth()
+	// 执行顺序是左到右
+}
+```
 ## 2.3 常量成员
-const 成员变量
-const 成员函数
-mutable 关键字
+const 成员变量可以被列表初始化
+const 成员函数只能调用const成员函数
+mutable 关键字表明该变量可以在const 成员函数中被改变（例如访问次数什么的）
 ## 2.4 静态成员
-静态成员变量
-静态成员函数
-静态成员的初始化
+静态成员非常特立独行，无论创建多少个类的对象，都只有一个静态成员的副本。
+静态成员的初始化只在类外进行，如果没有初始化语句，则会被初始化为0
+静态成员函数也类似，首先只能访问类的静态成员数据，就算没有类的对象也能访问。
+```cpp
+#include <iostream>
+#include <memory>
+using namespace std;
+class Myclass
+{
+public:
+	static int class_cnt;
+	static void getClassCnt();
+	Myclass() {Myclass::class_cnt++;}
+	~Myclass() {Myclass::class_cnt--;}
+};
+int Myclass::class_cnt = 0;
+void Myclass::getClassCnt()
+{
+	cout << Myclass::class_cnt << endl;
+}
+int main()
+{
+	Myclass::getClassCnt(); // output 0
+	unique_ptr<Myclass> i = make_unique<Myclass>();
+	Myclass::getClassCnt(); // output 1
+	return 0;
+}
+```
 # 第三部分：继承
 ## 3.1 继承基础
-继承的概念和语法
-基类和派生类
+继承是一种“is-a”句式：子类是一个基类
+例如 dog is a animal
+`class dog : public animal`
+这里狗就是派生类（子类），animal就是基类
 继承方式：public、protected、private
-访问权限的变化
+我们一般用public来继承，可以简单的理解这里的关键字决定了基类的public和protected对象在子类里访问权限的变化：
+	对public继承，那么基类的public在子类也是public, protected在子类也是protected
+	对protected/private继承，那么基类的保护和私有对象就变成子类的protected/private对象
 ## 3.2 构造和析构顺序
 派生类的构造过程
 派生类的析构过程
@@ -176,40 +224,78 @@ mutable 关键字
 protected 的作用
 ## 3.4 多重继承
 多重继承的语法
-菱形继承问题
-虚继承
+`class a : public c, public d, public k`
+
+**虚继承**是C++中为了解决多继承（尤其是菱形继承）问题而引入的一种机制。它的主要目的是在多继承中避免数据冗余和二义性问题。
+`class a : virtual public c`
+在多继承中，如果一个基类被多个派生类继承，而这些派生类又被另一个类继承时，基类的成员会在最终派生类中出现多份拷贝。这种情况会导致存储空间浪费以及访问成员时的歧义。虚继承通过确保基类的成员在最终派生类中只保留一份，从而解决了这些问题。
 # 第四部分：多态
 ## 4.1 函数重载
 函数重载的概念
 重载的规则
 运算符重载
 ## 4.2 虚函数和动态绑定
-虚函数的概念
-virtual 关键字
-虚函数表（vtable）
-纯虚函数
-抽象类
+virtual 关键字表明该函数是虚函数，可以被重载
+虚函数表（vtable）是具体实现的细节，姑且不讨论
+在虚函数的基础上添加 = 0 标记就是纯虚函数，包含纯虚函数的父类强制要求子类给出实现。
+包含纯虚函数的类就是抽象类，抽象类不能实例化
 ## 4.3 多态的应用
-基类指针和派生类对象
+其实要点就是我们可以用基类的指针管理派生类对象
 ==动态绑定 vs 静态绑定== 
-虚析构函数的必要性
-override 和 final 关键字（C++11）
+如果没有使用 virtual、override这些关键字，那就是静态绑定的。
+动态绑定实现了我用基类的指针管理派生类对象。
+好比Animal都会eat、speak，但Dog和Cat具体eat和speak都不同。那么可以在基类Animal中声明纯虚函数eat、speak来要求子类给出实现。
+最后在运行时，编译器会确定具体使用函数的哪一个实现。
+
+虚析构函数是必要的，对于我们采用基类指针管理派生类对象的需求，虚析构函数能确保正确调用派生类的析构函数
+
+override关键字类似于一个检查。派生类的方法一旦使用override关键字，就要求其继承的父类有一个与之对应的需要重载的虚函数，若没有则无法通过编译
+final关键字就是说这个函数不允许再重载了
+
 # 第五部分：运算符重载
+在这之前可以补充函数重载：在同一个作用域内，可以声明几个功能类似的同名函数，但是这些同名函数的形式参数（指参数的个数、类型或者顺序）必须不同。
+就像之前学构造函数的时候，一个类可以有多个包含不同形参的构造函数。
 ## 5.1 运算符重载基础
-为什么需要运算符重载
-可重载的运算符
-不可重载的运算符
-## 5.2 常见运算符重载
-算术运算符：`+、-、*、/`
-比较运算符：、!=、<、>
-赋值运算符：=
-输入输出运算符：<<、>>
-下标运算符：
-函数调用运算符：()
-## 5.3 友元函数
-友元函数的概念
-友元类
-何时使用友元
+```cpp
+#include <iostream>
+#include <algorithm>
+#include <memory>
+
+using namespace std;
+class Point
+{
+private:
+	int x{ 0 };
+	int y{ 0 };
+public:
+	Point(int x, int y) : x(x), y(y) {}
+	Point operator+(const Point& other)
+	{
+		return Point(this->x + other.x, this->y + other.y);
+	}
+	Point operator-(const Point& other)
+	{
+		return Point(this->x - other.x, this->y - other.y);
+	}
+	void output()
+	{
+		cout << "x is " << x << " and y is " << y << endl;
+	}
+};
+int main()
+{
+	unique_ptr<Point> a = make_unique<Point>(15, 2);
+	unique_ptr<Point> b = make_unique<Point>(2, 3);
+	Point c = *a - *b;
+	c.output();
+	c = c.operator-(*b);
+	c.output();
+}
+```
+通过运算符重载，我们可以让类的运算变得符合直觉，譬如建立向量类，那么就可以重载加法减法，以及大于小于来模拟实际向量的运算。
+## 5.2 友元函数
+friend 权限很高，可以访问私有和保护成员
+也许可以用来实现日志功能
 # 第六部分：高级特性
 ## 6.1 模板类
 类模板的定义
