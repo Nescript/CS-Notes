@@ -1,0 +1,29 @@
+#ifndef CONFIG_H
+#define CONFIG_H
+
+// 项目信息
+#define PROJECT_NAME "@PROJECT_NAME@"
+#define PROJECT_VERSION "@PROJECT_VERSION@"
+#define PROJECT_VERSION_MAJOR @PROJECT_VERSION_MAJOR@
+#define PROJECT_VERSION_MINOR @PROJECT_VERSION_MINOR@
+#define PROJECT_VERSION_PATCH @PROJECT_VERSION_PATCH@
+
+// 构建配置
+#define BUILD_TYPE "@CMAKE_BUILD_TYPE@"
+
+// 功能开关
+#cmakedefine ENABLE_LOGGING
+#cmakedefine ENABLE_PROFILING
+
+// 平台检测
+#ifdef _WIN32
+    #define PLATFORM "Windows"
+#elif __linux__
+    #define PLATFORM "Linux"
+#elif __APPLE__
+    #define PLATFORM "macOS"
+#else
+    #define PLATFORM "Unknown"
+#endif
+
+#endif // CONFIG_H

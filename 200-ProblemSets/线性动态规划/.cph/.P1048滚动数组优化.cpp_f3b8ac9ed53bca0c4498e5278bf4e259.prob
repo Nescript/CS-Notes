@@ -1,0 +1,1 @@
+{"name":"Local: P1048滚动数组优化","url":"d:\\Obsidian Library\\信息学奥赛笔记\\200 刷题\\线性动态规划\\P1048滚动数组优化.cpp","tests":[{"id":1758943255347,"input":"70 3\n71 100\n69 1\n1 2\n","output":"3"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\Obsidian Library\\信息学奥赛笔记\\200 刷题\\线性动态规划\\P1048滚动数组优化.cpp","group":"local","local":true}

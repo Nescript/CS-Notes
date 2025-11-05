@@ -1,0 +1,21 @@
+{
+	"nodes":[
+		{"id":"fc4b6dbeca5068a5","type":"text","text":"# 曲面积分和曲线积分","x":-125,"y":0,"width":375,"height":80},
+		{"id":"313197e50e57252c","type":"file","file":"高等数学/曲线积分和曲面积分/格林公式.md","x":83,"y":784,"width":400,"height":400},
+		{"id":"e5b1388e261e551b","type":"text","text":"第二类曲面积分","x":125,"y":-140,"width":250,"height":60},
+		{"id":"4aa262816216b4d8","type":"text","text":"高斯公式","x":125,"y":-480,"width":250,"height":60},
+		{"id":"c28610cfa37bad27","type":"text","text":"斯托克斯公式","x":560,"y":-480,"width":250,"height":60},
+		{"id":"f3c70e1526eaf7fe","type":"file","file":"高等数学/曲线积分和曲面积分/第二类曲线积分.md","x":250,"y":209,"width":400,"height":400},
+		{"id":"4b4d1cbdf983b780","type":"file","file":"高等数学/曲线积分和曲面积分/第一类曲线积分.md","x":-650,"y":209,"width":400,"height":400},
+		{"id":"661799dce0d19412","x":-650,"y":-450,"width":400,"height":400,"type":"file","file":"高等数学/曲线积分和曲面积分/第一类曲面积分.md"}
+	],
+	"edges":[
+		{"id":"f1de10ac5954d1c1","fromNode":"fc4b6dbeca5068a5","fromSide":"bottom","toNode":"4b4d1cbdf983b780","toSide":"top"},
+		{"id":"28e46d04e2a0df62","fromNode":"f3c70e1526eaf7fe","fromSide":"bottom","toNode":"313197e50e57252c","toSide":"top","label":"将曲线积分转化为所围平面的积分"},
+		{"id":"c82a28d4d9318c95","fromNode":"fc4b6dbeca5068a5","fromSide":"bottom","toNode":"f3c70e1526eaf7fe","toSide":"top"},
+		{"id":"534e8eae9c368361","fromNode":"fc4b6dbeca5068a5","fromSide":"top","toNode":"e5b1388e261e551b","toSide":"bottom"},
+		{"id":"17825f73b2050388","fromNode":"e5b1388e261e551b","fromSide":"top","toNode":"4aa262816216b4d8","toSide":"bottom","label":"将曲面积分转化为对所谓空间的积分"},
+		{"id":"f83f78a9b2f6cfd5","fromNode":"e5b1388e261e551b","fromSide":"right","toNode":"c28610cfa37bad27","toSide":"bottom","label":"将曲面积分转化为曲面边界曲线的积分"},
+		{"id":"282639abe39d91d7","fromNode":"fc4b6dbeca5068a5","fromSide":"top","toNode":"661799dce0d19412","toSide":"bottom"}
+	]
+}
